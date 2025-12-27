@@ -67,26 +67,12 @@ class MainAppWindow(QMainWindow):
         self.degree_button.setStyleSheet("font-size: 30px;"
                                           "background-color: transparent;")
 
-        #Setting up precipitation result label
-        self.precipitation_label = QLabel("Precipitation: 100%", self)
-        self.precipitation_label.setGeometry(390, 250, 170, 50)
+        #Setting up precipitation, wind speed and pressure result label
+        self.precipitation_label = QLabel(f"Precipitation: 100% \nWind Speed: 100 km/h \nPressure: 1000 hPa", self)
+        self.precipitation_label.setGeometry(390, 260, 180, 80)
         self.precipitation_label.setStyleSheet("background-color: transparent;"
                                                "font-size: 18px;"
                                                "color: rgb(255, 255, 255, 180);")
-
-        #Setting up windspeed result label
-        self.windspeed_label = QLabel("Wind Speed: 100 km/h", self)
-        self.windspeed_label.setGeometry(390, 280, 190, 50)
-        self.windspeed_label.setStyleSheet("background-color: transparent;"
-                                           "font-size: 18px;"
-                                           "color: rgb(255, 255, 255, 180);")
-
-        #Setting up pressure result label
-        self.pressure_label = QLabel("Pressure: 1000 hPa", self)
-        self.pressure_label.setGeometry(390, 310, 170, 50)
-        self.pressure_label.setStyleSheet("background-color: transparent;"
-                                           "font-size: 18px;"
-                                           "color: rgb(255, 255, 255, 180);")
 
 
 #Main if statement 
