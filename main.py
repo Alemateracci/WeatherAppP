@@ -61,10 +61,16 @@ class MainAppWindow(QMainWindow):
         self.temperature_result_label.setStyleSheet("background-color: transparent;"
                                                   "font-size: 63px;")
         
-        #Setting up unit converter button
-        self.degree_button = QPushButton("°C/°F", self)
+        #Setting up degree converter button
+        self.degree_button = QPushButton("°C/", self)
         self.degree_button.setGeometry(270, 265, 75, 30)
         self.degree_button.setStyleSheet("font-size: 30px;"
+                                          "background-color: transparent;")
+        
+        #Setting up fahrenheit converter button
+        self.fahrenheit_button = QPushButton("°F", self)
+        self.fahrenheit_button.setGeometry(307, 265, 75, 30)
+        self.fahrenheit_button.setStyleSheet("font-size: 30px;"
                                           "background-color: transparent;")
 
         #Setting up precipitation, wind speed and pressure result label
