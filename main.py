@@ -2,6 +2,7 @@ import sys
 import requests
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QMessageBox
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap
 
 class MainAppWindow(QMainWindow):
     def __init__(self):
@@ -23,7 +24,7 @@ class MainAppWindow(QMainWindow):
         #Setting search text box
         self.search_input = QLineEdit(self)
         self.search_input.setAlignment(Qt.AlignLeft)
-        self.search_input.setPlaceholderText('Enter the city and country (e.g. "London, UK")')
+        self.search_input.setPlaceholderText('Enter the city and/or country (e.g. "London, UK")')
         self.search_input.setGeometry(240, 118, 500, 50)
         self.search_input.setStyleSheet("font-size: 20px;"
                                         "border: none")
@@ -54,7 +55,7 @@ class MainAppWindow(QMainWindow):
         self.search_result_backgroundC_label.setStyleSheet("background-color: #303030;")
 
         #Setting up result label
-        self.country_result_label = QLabel("Niggeria", self)
+        self.country_result_label = QLabel("City Weather", self)
         self.country_result_label.setGeometry(0, 165, 700, 100)
         self.country_result_label.setAlignment(Qt.AlignCenter)
         self.country_result_label.setStyleSheet("background-color: transparent;"
@@ -63,19 +64,20 @@ class MainAppWindow(QMainWindow):
 
         #Setting up result icon label
         self.icon_result_label = QLabel(self)
-        self.icon_result_label.setGeometry(70, 275, 100, 100)
+        self.icon_result_label.setGeometry(65, 250, 150, 150)
         self.icon_result_label.setStyleSheet("background-color: transparent;"
-                                             "font-size: 95px;")
+                                             "font-size: 150px;")
         
         #Setting up temperature result label
         self.temperature_result_label = QLabel(self)
-        self.temperature_result_label.setGeometry(200, 260, 200, 100)
+        self.temperature_result_label.setGeometry(200, 260, 115, 100)
+        self.temperature_result_label.setAlignment(Qt.AlignCenter)
         self.temperature_result_label.setStyleSheet("background-color: transparent;"
-                                                  "font-size: 63px;")
+                                                    "font-size: 67px;")
         
         #Setting up degree converter button
         self.degree_button = QPushButton("°C/", self)
-        self.degree_button.setGeometry(270, 285, 75, 30)
+        self.degree_button.setGeometry(300, 285, 75, 30)
         self.degree_button.setStyleSheet("""QPushButton 
                                             {
                                                 font-size: 30px;
@@ -89,7 +91,7 @@ class MainAppWindow(QMainWindow):
         
         #Setting up fahrenheit converter button
         self.fahrenheit_button = QPushButton("°F", self)
-        self.fahrenheit_button.setGeometry(307, 285, 75, 30)
+        self.fahrenheit_button.setGeometry(337, 285, 75, 30)
         self.fahrenheit_button.setStyleSheet("""QPushButton 
                                                 {
                                                     font-size: 30px;
@@ -103,13 +105,22 @@ class MainAppWindow(QMainWindow):
                                              """)
 
         #Setting up precipitation, wind speed and pressure result label
-        self.precipitation_label = QLabel(f"Precipitation: 100% \nWind Speed: 100 km/h \nPressure: 1000 hPa", self)
-        self.precipitation_label.setGeometry(410, 285, 180, 80)
+        self.precipitation_label = QLabel(f"Precipitation: 0% \nWind Speed: 0 km/h \nPressure: 0 hPa", self)
+        self.precipitation_label.setGeometry(430, 285, 180, 80)
         self.precipitation_label.setStyleSheet("background-color: transparent;"
                                                "font-size: 18px;"
                                                "color: rgba(255, 255, 255, 180);")
+        self.precipitation_label.setToolTip("The values for precipitation in %, \nwind speed in kilometers per hour \nand pressure in hecto-pascals")
         
-        #Creating an error message box
+        #Setting weather condition description label 
+        self.weather_description_label = QLabel(self)
+        self.weather_description_label.setGeometry(0, 390, 290, 50)
+        self.weather_description_label.setAlignment(Qt.AlignCenter)
+        self.weather_description_label.setStyleSheet("background-color: transparent;"
+                                                     "font-size: 18px;"
+                                                     "font-weight: bold;")
+        
+        #Setting an error message box
         self.error_message = QMessageBox()
         self.error_message.setIcon(QMessageBox.Critical)
         self.error_message.setWindowFlags(Qt.FramelessWindowHint)
@@ -119,7 +130,8 @@ class MainAppWindow(QMainWindow):
     def get_weather_info(self):
         key_weatherAPI = "JRXUF5NDH62ELPGPETM5R3AEB"
         city_Input = self.search_input.text()
-        url = f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{city_Input}?key={key_weatherAPI}"
+        self.search_input.clear()
+        url = f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{city_Input}?key={key_weatherAPI}&include=fcst&elements=datetime,temp,precip,windspeed,pressure,icon,conditions&unitGroup=metric"
 
         try:
             response = requests.get(url)
@@ -161,15 +173,57 @@ class MainAppWindow(QMainWindow):
     def display_error(self, error_message):
         self.error_message.setText(error_message)
         self.error_message.exec_()
+        self.weather_description_label.clear()
+        self.icon_result_label.clear()
+        self.country_result_label.setText("City Weather")
+        self.temperature_result_label.clear()
+        self.precipitation_label.setText(f"Precipitation: 0% \nWind Speed: 0 km/h \nPressure: 0 hPa")
 
-
-    def unit_conversion(self):
+    def unit_conversion_deg_to_fer(self):
         pass
 
 
+    def unit_conversion_fer_to_deg(self):
+        pass
+
+
+    #Method for displaying weather information
     def display_weather(self, weather_data_json):
-        pass
+        print(weather_data_json)
+        self.country_result_label.setText(weather_data_json['resolvedAddress'].split(",")[0])
 
+        self.temperature_result_label.setText(f"{weather_data_json['days'][0]['temp']:.0f}")
+
+        self.precipitation_label.setText(f"Precipitation: {weather_data_json['days'][0]['precip']:.0f} % \nWind Speed: {weather_data_json['days'][0]['windspeed']:.0f} km/h \nPressure: {weather_data_json['days'][0]['pressure']:.0f} hPa")
+
+        self.weather_description_label.setText(weather_data_json['days'][0]['conditions'])
+
+        Pixmap_icon_address = QPixmap(self.weather_icon(weather_data_json['days'][0]['icon']))
+        self.icon_result_label.setScaledContents(True) 
+        self.icon_result_label.setPixmap(Pixmap_icon_address)
+
+    
+    #Method for returning weather icon path based on weather ID from API
+    def weather_icon(self, weather_ID):
+        match weather_ID:
+            case "snow":
+                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/snow.png"
+            case "rain":
+                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/rain.png"
+            case "fog":
+                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/fog.png"
+            case "wind":
+                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/wind.png"
+            case "cloudy":
+                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/cloudy.png"
+            case "partly-cloudy-day":
+                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/partly-cloudy-day.png"
+            case "partly-cloudy-night":
+                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/partly-cloudy-night.png"
+            case "clear-day":
+                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/clear-day.png"
+            case "clear-night":
+                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/clear-night.png"
 
 #Main if statement 
 if __name__ == "__main__":
