@@ -207,23 +207,23 @@ class MainAppWindow(QMainWindow):
     def weather_icon(self, weather_ID):
         match weather_ID:
             case "snow":
-                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/snow.png"
+                return "WeatherIcons/snow.png"
             case "rain":
-                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/rain.png"
+                return "WeatherIcons/rain.png"
             case "fog":
-                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/fog.png"
+                return "WeatherIcons/fog.png"
             case "wind":
-                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/wind.png"
+                return "WeatherIcons/wind.png"
             case "cloudy":
-                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/cloudy.png"
+                return "WeatherIcons/cloudy.png"
             case "partly-cloudy-day":
-                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/partly-cloudy-day.png"
+                return "WeatherIcons/partly-cloudy-day.png"
             case "partly-cloudy-night":
-                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/partly-cloudy-night.png"
+                return "WeatherIcons/partly-cloudy-night.png"
             case "clear-day":
-                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/clear-day.png"
+                return "WeatherIcons/clear-day.png"
             case "clear-night":
-                return "/Users/aleksandermatracki/Desktop/Coding Projects/WeatherAppP/WeatherIcons/clear-night.png"
+                return "WeatherIcons/clear-night.png"
 
 #Main if statement 
 if __name__ == "__main__":
