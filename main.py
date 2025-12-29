@@ -1,6 +1,6 @@
 import sys
 import requests
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QMessageBox
 from PyQt5.QtCore import Qt
 
 class MainAppWindow(QMainWindow):
@@ -59,7 +59,6 @@ class MainAppWindow(QMainWindow):
         self.country_result_label.setAlignment(Qt.AlignCenter)
         self.country_result_label.setStyleSheet("background-color: transparent;"
                                                 "font-size: 70px;"
-                                                "font-family: Segoe UI;"
                                                 "font-weight: bold;")
 
         #Setting up result icon label
@@ -108,22 +107,67 @@ class MainAppWindow(QMainWindow):
         self.precipitation_label.setGeometry(410, 285, 180, 80)
         self.precipitation_label.setStyleSheet("background-color: transparent;"
                                                "font-size: 18px;"
-                                               "color: rgb(255, 255, 255, 180);")
+                                               "color: rgba(255, 255, 255, 180);")
         
+        #Creating an error message box
+        self.error_message = QMessageBox()
+        self.error_message.setIcon(QMessageBox.Critical)
+        self.error_message.setWindowFlags(Qt.FramelessWindowHint)
+
         
+    #Method for retrieving weather information 
     def get_weather_info(self):
-        print("button pressed")
-    
+        key_weatherAPI = "JRXUF5NDH62ELPGPETM5R3AEB"
+        city_Input = self.search_input.text()
+        url = f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{city_Input}?key={key_weatherAPI}"
+
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            weather_data_json = response.json()
+            self.display_weather(weather_data_json)
+
+        #This catches HTTP errors returned by the API
+        except requests.exceptions.HTTPError:
+            match response.status_code:
+                case 400:
+                    self.display_error("400 BAD REQUEST: Invalid request format or parameters.")
+                case 401:
+                    self.display_error("401 UNAUTHORIZED: API key or account problem.")
+                case 404:
+                    self.display_error("404 NOT FOUND: Endpoint does not exist.")
+                case 429:
+                    self.display_error("429 TOO MANY REQUESTS: Rate limit exceeded.")
+                case 500:
+                    self.display_error("500 INTERNAL SERVER ERROR: Server problem.")
+                case _:
+                    self.display_error(f"HTTP error occurred: {response.status_code}")
+
+        #This catches network errors
+        except requests.exceptions.ConnectionError:
+            self.display_error("Network or connection error occurred.")
+        #This catches timeout errors
+        except requests.exceptions.Timeout:
+            self.display_error("The request timed out.")
+        #This catches URL errors
+        except requests.exceptions.TooManyRedirects:
+            self.display_error("URL error, too many or wrong redirects.")
+        #This catches any other errors
+        except requests.exceptions.RequestException as e:
+            self.display_error(f"Other error occurred:{e}")
+
+
+    #Method for displaying error messages
+    def display_error(self, error_message):
+        self.error_message.setText(error_message)
+        self.error_message.exec_()
+
 
     def unit_conversion(self):
         pass
 
 
-    def display_error(self, message):
-        pass
-
-
-    def display_weather(self, data):
+    def display_weather(self, weather_data_json):
         pass
 
 
