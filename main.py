@@ -85,9 +85,10 @@ class MainAppWindow(QMainWindow):
                                             }
                                             QPushButton:hover 
                                             {
-                                                color: #9e9d9d;
+                                                color: #ffffff;
                                             }
                                          """)
+        self.degree_button.clicked.connect(self.unit_conversion_fer_to_deg)
         
         #Setting up fahrenheit converter button
         self.fahrenheit_button = QPushButton("°F", self)
@@ -100,9 +101,10 @@ class MainAppWindow(QMainWindow):
                                                 }
                                                 QPushButton:hover 
                                                 {
-                                                    color: #9e9d9d;
+                                                    color: #ffffff;
                                                 }
                                              """)
+        self.fahrenheit_button.clicked.connect(self.unit_conversion_deg_to_fer)
 
         #Setting up precipitation, wind speed and pressure result label
         self.precipitation_label = QLabel(f"Precipitation: 0% \nWind Speed: 0 km/h \nPressure: 0 hPa", self)
@@ -132,6 +134,7 @@ class MainAppWindow(QMainWindow):
         city_Input = self.search_input.text()
         self.search_input.clear()
         url = f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{city_Input}?key={key_weatherAPI}&include=fcst&elements=datetime,temp,precip,windspeed,pressure,icon,conditions&unitGroup=metric"
+        self.unit_conversion_fer_to_deg()
 
         try:
             response = requests.get(url)
@@ -179,13 +182,74 @@ class MainAppWindow(QMainWindow):
         self.temperature_result_label.clear()
         self.precipitation_label.setText(f"Precipitation: 0% \nWind Speed: 0 km/h \nPressure: 0 hPa")
 
+
+    #Method for converting Celsius to Fahrenheit
     def unit_conversion_deg_to_fer(self):
-        pass
+        self.degree_button.setDisabled(False)
+        self.degree_button.setStyleSheet("""QPushButton 
+                                            {
+                                                font-size: 30px;
+                                                background-color: transparent;
+                                                color: #9e9d9d
+                                            }
+                                            QPushButton:hover 
+                                            {
+                                                color: #ffffff;
+                                            }
+                                         """)
+        
+        self.fahrenheit_button.setStyleSheet("""QPushButton 
+                                                {
+                                                    font-size: 30px;
+                                                    background-color: transparent;
+                                                    color: #ffffff;
+                                                }
+                                                QPushButton:hover 
+                                                {
+                                                    color: #ffffff;
+                                                }
+                                             """)
+        
+        if self.temperature_result_label.text() == "":
+            pass
+        else:
+            self.temperature_result_label.setText(f"{(int(self.temperature_result_label.text()) * 9/5) + 32:.0f}")
+            self.fahrenheit_button.setDisabled(True)
 
 
+    #Method for converting Fahrenheit to Celsius
     def unit_conversion_fer_to_deg(self):
-        pass
+        self.fahrenheit_button.setDisabled(False)
+        self.degree_button.setStyleSheet("""QPushButton 
+                                            {
+                                                font-size: 30px;
+                                                background-color: transparent;
+                                                color: #ffffff
+                                            }
+                                            QPushButton:hover 
+                                            {
+                                                color: #ffffff;
+                                            }
+                                         """)
+        
+        self.fahrenheit_button.setStyleSheet("""QPushButton 
+                                                {
+                                                    font-size: 30px;
+                                                    background-color: transparent;
+                                                    color: #9e9d9d
+                                                }
+                                                QPushButton:hover 
+                                                {
+                                                    color: #ffffff;
+                                                }
+                                             """)
 
+        if self.temperature_result_label.text() == "":
+            pass
+        else:
+            self.temperature_result_label.setText(f"{(int(self.temperature_result_label.text()) - 32) * 5/9:.0f}")
+            self.degree_button.setDisabled(True)
+        
 
     #Method for displaying weather information
     def display_weather(self, weather_data_json):
@@ -223,6 +287,7 @@ class MainAppWindow(QMainWindow):
                 return "WeatherIcons/clear-day.png"
             case "clear-night":
                 return "WeatherIcons/clear-night.png"
+
 
 #Main if statement 
 if __name__ == "__main__":
