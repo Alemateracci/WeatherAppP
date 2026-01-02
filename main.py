@@ -217,6 +217,7 @@ class MainAppWindow(QMainWindow):
             pass
         else:
             self.temperature_result_label.setText(f"{(int(self.temperature_result_label.text()) * 9/5) + 32:.0f}")
+
             self.fahrenheit_button.setDisabled(True)
 
 
@@ -312,66 +313,71 @@ class MainAppWindow(QMainWindow):
 
 
     #Method for providing weekly weather information
-    def display_weekly_weather(self, weather_data_json):        
-        self.seven_day_weather_layout = QHBoxLayout()
-        self.seven_day_weather_layout.setAlignment(Qt.AlignCenter)
-        self.seven_day_weather_layout.setSpacing(10)
-        
-        self.seven_day_weather_widget = QWidget(self)
-        self.seven_day_weather_widget.setGeometry(0, 445, 700, 140)
-        self.seven_day_weather_widget.setStyleSheet("background-color: transparent;")
-        
-        for i in range(7):
-            if i ==0:
-                weekday = "Today"
-            else:
-                weekday = self.weather_weekday(weather_data_json['days'][i]['datetime'])
+    def display_weekly_weather(self, weather_data_json):                
+        #Way to remove and clear old weekly widget data before adding new data
+        old_Widget = self.findChild(QWidget, "seven_day_weather_widget")
+        if old_Widget is not None:
+            old_Widget.deleteLater()
 
-            self.welcome_label.setText("7-Day Weather Forecast") 
+
+        seven_day_weather_layout = QHBoxLayout()
+        seven_day_weather_layout.setAlignment(Qt.AlignCenter)
+        seven_day_weather_layout.setSpacing(10)
+
+        seven_day_weather_widget = QWidget(self)
+        seven_day_weather_widget.setGeometry(0, 445, 700, 140)
+        seven_day_weather_widget.setStyleSheet("background-color: transparent;")
+
+        for i in range(7):
+            weekday = "Today" if i == 0 else self.weather_weekday(weather_data_json['days'][i]['datetime'])
+
+            self.welcome_label.setText("7-Day Weather Forecast")
             min_temp = f"{weather_data_json['days'][i]['tempmin']:.0f}"
             max_temp = f"{weather_data_json['days'][i]['tempmax']:.0f}"
             weather_icon = QPixmap(self.weather_icon(weather_data_json['days'][i]['icon']))
             weather_icon_address = weather_icon.scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+
             each_day_frame = self.parameters_of_GUI_weekly_weather(weekday, min_temp, max_temp, weather_icon_address)
-            self.seven_day_weather_layout.addWidget(each_day_frame)
-        
-        self.seven_day_weather_widget.setLayout(self.seven_day_weather_layout)
-        self.seven_day_weather_widget.show()
+            seven_day_weather_layout.addWidget(each_day_frame)
+
+        seven_day_weather_widget.setLayout(seven_day_weather_layout)
+        seven_day_weather_widget.show()
+        seven_day_weather_widget.setObjectName("seven_day_weather_widget")
 
 
     #Method for setting up GUI parameters for weekly weather display
     def parameters_of_GUI_weekly_weather(self, weekday, min_temp, max_temp, weather_icon_address):
-        self.each_day_frame = QFrame(self)
-        self.each_day_frame.setStyleSheet("background-color: #4f4f4f;"
-                                          "border-radius: 15px;")
-        self.each_day_frame.setFixedSize(90, 125)
+        frame = QFrame()
+        frame.setStyleSheet("background-color: transparent;"
+                            "border-radius: 15px;")
+        frame.setFixedSize(90, 125)
 
-        self.each_day_layout = QVBoxLayout()
-        self.each_day_layout.setAlignment(Qt.AlignCenter)
+        each_day_layout = QVBoxLayout()
+        each_day_layout.setAlignment(Qt.AlignCenter)
 
-        self.weekday_label = QLabel(weekday, self)
-        self.weekday_label.setAlignment(Qt.AlignCenter)
-        self.weekday_label.setStyleSheet("font-size: 16px;"
-                                         "color: white;"
-                                         "background-color: transparent;")
-        self.each_day_layout.addWidget(self.weekday_label)
+        weekday_label = QLabel(weekday)
+        weekday_label.setAlignment(Qt.AlignCenter)
+        weekday_label.setStyleSheet("font-size: 16px;" 
+                                    "color: white;" 
+                                    "background-color: transparent;")
+        each_day_layout.addWidget(weekday_label)
 
-        self.weather_icon_label = QLabel(self)
-        self.weather_icon_label.setPixmap(weather_icon_address)
-        self.weather_icon_label.setAlignment(Qt.AlignCenter)
-        self.weather_icon_label.setStyleSheet("background-color: transparent;")
-        self.weather_icon_label.setScaledContents(True)
-        self.each_day_layout.addWidget(self.weather_icon_label)
+        weather_icon_label = QLabel()
+        weather_icon_label.setPixmap(weather_icon_address)
+        weather_icon_label.setAlignment(Qt.AlignCenter)
+        weather_icon_label.setStyleSheet("background-color: transparent;")
+        weather_icon_label.setScaledContents(True)
+        each_day_layout.addWidget(weather_icon_label)
 
-        self.temp_label = QLabel(f"{min_temp}°C {max_temp}°C", self)
-        self.temp_label.setAlignment(Qt.AlignCenter)
-        self.temp_label.setStyleSheet("font-size: 14px;"
-                                      "color: white;"
-                                      "background-color: transparent;")
-        self.each_day_layout.addWidget(self.temp_label)
+        temp_label = QLabel(f"{min_temp}°C {max_temp}°C")
+        temp_label.setAlignment(Qt.AlignCenter)
+        temp_label.setStyleSheet("font-size: 14px;" 
+                                 "color: white;"
+                                 "background-color: transparent;")
+        each_day_layout.addWidget(temp_label)
 
-        self.each_day_frame.setLayout(self.each_day_layout)
-        return self.each_day_frame
+        frame.setLayout(each_day_layout)
+        return frame
 
 
 #Main if statement 
