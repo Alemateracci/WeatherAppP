@@ -6,16 +6,59 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 
 class MainAppWindow(QMainWindow):
+    #Constructor method
     def __init__(self):
         super().__init__()
 
-        #Setting up main window
+        #Constructing and Setting up main window
         self.setWindowTitle("Weather Application")
         self.setGeometry(450, 200, 800, 600)
         self.setStyleSheet("background-color: #242424;")
 
-        #Setting up welcome message
+        #Constructing welcome message label
         self.welcome_label = QLabel("Welcome to Weather \nApplication!", self)
+        
+        #Constructing search text box
+        self.search_input = QLineEdit(self)
+
+        #Constructing search button
+        self.search_button = QPushButton("Get Weather", self)
+
+        #Constructing search result background label
+        self.search_result_backgroundC_label = QLabel(self)
+
+        #Constructing city/country result label
+        self.country_result_label = QLabel("City Weather", self)
+
+        #Constructing weather icon result label
+        self.icon_result_label = QLabel(self)
+        
+        #Constructing temperature result label
+        self.temperature_result_label = QLabel(self)
+        
+        #Constructing degree converter button
+        self.degree_button = QPushButton("°C/", self)
+        
+        #Constructing fahrenheit converter button
+        self.fahrenheit_button = QPushButton("°F", self)
+
+        #Constructing precipitation, wind speed and pressure result label
+        self.precipitation_label = QLabel(f"Precipitation: 0% \nWind Speed: 0 km/h \nPressure: 0 hPa", self)
+        
+        #Constructing weather condition description label 
+        self.weather_description_label = QLabel(self)
+        
+        #Constructing an error message box
+        self.error_message = QMessageBox()
+
+        #Calling method to set up GUI parameters
+        self.GUI_main_parameters()
+        self.GUI_weather_parameters()
+
+
+    #Method for setting up main GUI parameters
+    def GUI_main_parameters(self):
+        #Setting up welcome message label
         self.welcome_label.setGeometry(0, 5, 800, 90)
         self.welcome_label.setAlignment(Qt.AlignCenter)
         self.welcome_label.setStyleSheet("font-size: 40px;" 
@@ -23,15 +66,13 @@ class MainAppWindow(QMainWindow):
                                          "color: white;")
         
         #Setting search text box
-        self.search_input = QLineEdit(self)
         self.search_input.setAlignment(Qt.AlignLeft)
         self.search_input.setPlaceholderText('Enter the city and/or country (e.g. "London, UK")')
         self.search_input.setGeometry(270, 118, 550, 50)
         self.search_input.setStyleSheet("font-size: 20px;"
                                         "border: none")
-
+        
         #Setting search button
-        self.search_button = QPushButton("Get Weather", self)
         self.search_button.setGeometry(90, 123, 150, 40)
         self.search_button.setStyleSheet("""QPushButton 
                                             {
@@ -50,35 +91,37 @@ class MainAppWindow(QMainWindow):
                                          """)
         self.search_button.clicked.connect(self.get_weather_info)
 
-        #Setting search result background
-        self.search_result_backgroundC_label = QLabel(self)
+        #Setting search result background label
         self.search_result_backgroundC_label.setGeometry(0, 170, 800, 450)
         self.search_result_backgroundC_label.setStyleSheet("background-color: #303030;"
                                                            "border-radius: 25px;")
+        
+        #Setting an error message box
+        self.error_message.setIcon(QMessageBox.Critical)
+        self.error_message.setWindowFlags(Qt.FramelessWindowHint)
 
-        #Setting up result label
-        self.country_result_label = QLabel("City Weather", self)
+
+    #Method for setting up weather GUI parameters
+    def GUI_weather_parameters(self):
+        #Setting up country/city result label
         self.country_result_label.setGeometry(0, 165, 800, 100)
         self.country_result_label.setAlignment(Qt.AlignCenter)
         self.country_result_label.setStyleSheet("background-color: transparent;"
                                                 "font-size: 70px;"
                                                 "font-weight: bold;")
 
-        #Setting up result icon label
-        self.icon_result_label = QLabel(self)
+        #Setting up weather icon result label
         self.icon_result_label.setGeometry(115, 250, 150, 150)
         self.icon_result_label.setStyleSheet("background-color: transparent;"
                                              "font-size: 150px;")
         
         #Setting up temperature result label
-        self.temperature_result_label = QLabel(self)
         self.temperature_result_label.setGeometry(250, 260, 115, 100)
         self.temperature_result_label.setAlignment(Qt.AlignCenter)
         self.temperature_result_label.setStyleSheet("background-color: transparent;"
                                                     "font-size: 67px;")
         
         #Setting up degree converter button
-        self.degree_button = QPushButton("°C/", self)
         self.degree_button.setGeometry(350, 285, 75, 30)
         self.degree_button.setStyleSheet("""QPushButton 
                                             {
@@ -93,7 +136,6 @@ class MainAppWindow(QMainWindow):
         self.degree_button.clicked.connect(self.unit_conversion_fer_to_deg)
         
         #Setting up fahrenheit converter button
-        self.fahrenheit_button = QPushButton("°F", self)
         self.fahrenheit_button.setGeometry(387, 285, 75, 30)
         self.fahrenheit_button.setStyleSheet("""QPushButton 
                                                 {
@@ -109,7 +151,6 @@ class MainAppWindow(QMainWindow):
         self.fahrenheit_button.clicked.connect(self.unit_conversion_deg_to_fer)
 
         #Setting up precipitation, wind speed and pressure result label
-        self.precipitation_label = QLabel(f"Precipitation: 0% \nWind Speed: 0 km/h \nPressure: 0 hPa", self)
         self.precipitation_label.setGeometry(480, 285, 180, 80)
         self.precipitation_label.setStyleSheet("background-color: transparent;"
                                                "font-size: 18px;"
@@ -117,19 +158,13 @@ class MainAppWindow(QMainWindow):
         self.precipitation_label.setToolTip("The values for precipitation in %, \nwind speed in kilometers per hour \nand pressure in hecto-pascals")
         
         #Setting weather condition description label 
-        self.weather_description_label = QLabel(self)
         self.weather_description_label.setGeometry(50, 390, 280, 45)
         self.weather_description_label.setAlignment(Qt.AlignCenter)
         self.weather_description_label.setStyleSheet("background-color: transparent;"
                                                      "font-size: 18px;"
                                                      "font-weight: bold;")
         
-        #Setting an error message box
-        self.error_message = QMessageBox()
-        self.error_message.setIcon(QMessageBox.Critical)
-        self.error_message.setWindowFlags(Qt.FramelessWindowHint)
 
-        
     #Method for retrieving weather information 
     def get_weather_info(self):
         key_weatherAPI = "JRXUF5NDH62ELPGPETM5R3AEB"
