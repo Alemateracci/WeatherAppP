@@ -167,13 +167,17 @@ class MainAppWindow(QMainWindow):
 
     #Method for retrieving weather information 
     def get_weather_info(self):
+        #API information and URL construction
         key_weatherAPI = "JRXUF5NDH62ELPGPETM5R3AEB"
         city_Input = self.search_input.text()
         self.search_input.clear()
         url = f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{city_Input}?key={key_weatherAPI}&include=fcst&elements=datetime,temp,tempmax,tempmin,precip,windspeed,pressure,icon,conditions&unitGroup=metric"
+        
+        #Calling this to reset unit button always to degrees 
         self.unit_conversion_fer_to_deg()
 
         try:
+            #Requesting API data and converting to JSON format
             response = requests.get(url)
             response.raise_for_status()
             weather_data_json = response.json()
@@ -372,6 +376,7 @@ class MainAppWindow(QMainWindow):
         seven_day_weather_widget.setGeometry(0, 445, 800, 140)
         seven_day_weather_widget.setStyleSheet("background-color: transparent;")
 
+        #Adding each day's weather data to the weekly weather layout
         for i in range(7):
             weekday = "Today" if i == 0 else self.weather_weekday(weather_data_json['days'][i]['datetime'])
 
@@ -399,6 +404,7 @@ class MainAppWindow(QMainWindow):
         each_day_layout = QVBoxLayout()
         each_day_layout.setAlignment(Qt.AlignCenter)
 
+        #Constructing and Setting weekday label
         weekday_label = QLabel(weekday)
         weekday_label.setAlignment(Qt.AlignCenter)
         weekday_label.setStyleSheet("font-size: 16px;" 
@@ -406,6 +412,7 @@ class MainAppWindow(QMainWindow):
                                     "background-color: transparent;")
         each_day_layout.addWidget(weekday_label)
 
+        #Constructing and Setting weather icon label
         weather_icon_label = QLabel()
         weather_icon_label.setPixmap(weather_icon_address)
         weather_icon_label.setAlignment(Qt.AlignCenter)
@@ -413,6 +420,7 @@ class MainAppWindow(QMainWindow):
         weather_icon_label.setScaledContents(True)
         each_day_layout.addWidget(weather_icon_label)
 
+        #Constructing and Setting min and max temperature label
         temp_label = QLabel(f"{min_temp}°C | {max_temp}°C")
         temp_label.setObjectName(f"temp_label_{index}")
         temp_label.setProperty("min_temp", int(min_temp))
