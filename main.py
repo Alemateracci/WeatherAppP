@@ -4,6 +4,8 @@ from datetime import datetime
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QMessageBox, QWidget, QHBoxLayout, QVBoxLayout, QFrame
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
+from dotenv import load_dotenv
+import os
 
 class MainAppWindow(QMainWindow):
     #Constructor method
@@ -168,7 +170,8 @@ class MainAppWindow(QMainWindow):
     #Method for retrieving weather information 
     def get_weather_info(self):
         #API information and URL construction
-        key_weatherAPI = "JRXUF5NDH62ELPGPETM5R3AEB"
+        load_dotenv()
+        key_weatherAPI = os.getenv("API_KEY")
         city_Input = self.search_input.text()
         self.search_input.clear()
         url = f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{city_Input}?key={key_weatherAPI}&include=fcst&elements=datetime,temp,tempmax,tempmin,precip,windspeed,pressure,icon,conditions&unitGroup=metric"
