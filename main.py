@@ -308,7 +308,7 @@ class MainAppWindow(QMainWindow):
 
     #Method for displaying weather information
     def display_weather(self, weather_data_json):
-        self.country_result_label.setText(weather_data_json['resolvedAddress'].split(",")[0])
+        self.country_result_label.setText((weather_data_json['resolvedAddress'].split(",")[0]).capitalize())
 
         self.temperature_result_label.setText(f"{weather_data_json['days'][0]['temp']:.0f}")
 
