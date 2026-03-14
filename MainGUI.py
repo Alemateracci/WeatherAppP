@@ -14,6 +14,7 @@ def GUI_main_parameters(self):
     #Setting search text box
     self.search_input = QLineEdit(self)
     self.search_input.setAlignment(Qt.AlignLeft)
+    self.search_input.returnPressed.connect(self.get_weather_info)
     self.search_input.setPlaceholderText('Enter the city and/or country (e.g. "London, UK")')
     self.search_input.setGeometry(270, 118, 550, 50)
     self.search_input.setStyleSheet("font-size: 20px;"

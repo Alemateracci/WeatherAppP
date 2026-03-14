@@ -1,13 +1,12 @@
 import sys
 import requests
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QMessageBox, QWidget, QHBoxLayout, QVBoxLayout, QFrame
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
 from PyQt5.QtGui import QPixmap
 from dotenv import load_dotenv
 import os
-from utilities import weather_icon, weather_weekday
+from utilities import weather_icon
 from MainGUI import GUI_main_parameters, GUI_weather_parameters
-from WeeklyGUI import display_weekly_weather, parameters_of_GUI_weekly_weather
+from WeeklyGUI import display_weekly_weather
 from ErrorFunction import display_error
 
 class MainAppWindow(QMainWindow):
