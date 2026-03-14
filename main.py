@@ -1,11 +1,11 @@
 import sys
 import requests
-from datetime import datetime
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QMessageBox, QWidget, QHBoxLayout, QVBoxLayout, QFrame
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from dotenv import load_dotenv
 import os
+from utilities import weather_icon, weather_weekday
 
 class MainAppWindow(QMainWindow):
     #Constructor method
@@ -316,51 +316,9 @@ class MainAppWindow(QMainWindow):
 
         self.weather_description_label.setText(weather_data_json['days'][0]['conditions'])
 
-        Pixmap_icon_address = QPixmap(self.weather_icon(weather_data_json['days'][0]['icon']))
+        Pixmap_icon_address = QPixmap(weather_icon(weather_data_json['days'][0]['icon']))
         self.icon_result_label.setScaledContents(True) 
         self.icon_result_label.setPixmap(Pixmap_icon_address)
-
-    
-    #Method for returning weather icon path based on weather ID from API
-    def weather_icon(self, weather_ID):
-        match weather_ID:
-            case "snow":
-                return "WeatherIcons/snow.png"
-            case "rain":
-                return "WeatherIcons/rain.png"
-            case "fog":
-                return "WeatherIcons/fog.png"
-            case "wind":
-                return "WeatherIcons/wind.png"
-            case "cloudy":
-                return "WeatherIcons/cloudy.png"
-            case "partly-cloudy-day":
-                return "WeatherIcons/partly-cloudy-day.png"
-            case "partly-cloudy-night":
-                return "WeatherIcons/partly-cloudy-night.png"
-            case "clear-day":
-                return "WeatherIcons/clear-day.png"
-            case "clear-night":
-                return "WeatherIcons/clear-night.png"
-
-
-    #Method for returning the weekday based on date
-    def weather_weekday(self, day_date):
-        match datetime.strptime(day_date, "%Y-%m-%d").weekday():
-            case 0:
-                return "Mon"
-            case 1:
-                return "Tue"
-            case 2:
-                return "Wed"
-            case 3:
-                return "Thu"
-            case 4:
-                return "Fri"
-            case 5:
-                return "Sat"
-            case 6:
-                return "Sun"
 
 
     #Method for providing weekly weather information
@@ -381,13 +339,13 @@ class MainAppWindow(QMainWindow):
 
         #Adding each day's weather data to the weekly weather layout
         for i in range(7):
-            weekday = "Today" if i == 0 else self.weather_weekday(weather_data_json['days'][i]['datetime'])
+            weekday = "Today" if i == 0 else weather_weekday(weather_data_json['days'][i]['datetime'])
 
             self.welcome_label.setText("7-Day Weather Forecast")
             min_temp = f"{weather_data_json['days'][i]['tempmin']:.0f}"
             max_temp = f"{weather_data_json['days'][i]['tempmax']:.0f}"
-            weather_icon = QPixmap(self.weather_icon(weather_data_json['days'][i]['icon']))
-            weather_icon_address = weather_icon.scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            icon_pixmap = QPixmap(weather_icon(weather_data_json['days'][i]['icon']))
+            weather_icon_address = icon_pixmap.scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
 
             each_day_frame = self.parameters_of_GUI_weekly_weather(weekday, min_temp, max_temp, weather_icon_address, i)
             seven_day_weather_layout.addWidget(each_day_frame)

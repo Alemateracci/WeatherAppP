@@ -6,3 +6,6 @@ ToDo.txt
 
 #.env file for API key
 .env 
+
+#Python cache files
+__pycache__/
