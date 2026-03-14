@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QFrame, QLabel
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
-from MainGUI import weather_icon, weather_weekday
+from WeatherUtils import weather_icon, weather_weekday
 
 
 #Method for displaying weekly weather information in the GUI

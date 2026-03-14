@@ -2,11 +2,13 @@ from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QMessageBox
 from PyQt5.QtCore import Qt
 from UnitConversion import unit_conversion_deg_to_fer, unit_conversion_fer_to_deg
 from PyQt5.QtGui import QPixmap
-from datetime import datetime
-
+from WeatherUtils import weather_icon, weather_weekday
+from GetWeatherData import get_weather_info as fetch_weather_info
 
 #Method for setting up main GUI parameters
 def GUI_main_parameters(self):
+    # bind weather lookup action to this window
+    self.get_weather_info = lambda: fetch_weather_info(self)
     #Setting up welcome message label
     self.welcome_label = QLabel("Welcome to Weather \nApplication!", self)
     self.welcome_label.setGeometry(0, 5, 800, 90)
@@ -122,48 +124,6 @@ def GUI_weather_parameters(self):
                                                     "font-weight: bold;")
 
 
-#Method for returning the weather icon based on the weather ID
-def weather_icon(weather_ID):
-    match weather_ID:
-        case "snow":
-            return "WeatherIcons/snow.png"
-        case "rain":
-            return "WeatherIcons/rain.png"
-        case "fog":
-            return "WeatherIcons/fog.png"
-        case "wind":
-            return "WeatherIcons/wind.png"
-        case "cloudy":
-            return "WeatherIcons/cloudy.png"
-        case "partly-cloudy-day":
-            return "WeatherIcons/partly-cloudy-day.png"
-        case "partly-cloudy-night":
-            return "WeatherIcons/partly-cloudy-night.png"
-        case "clear-day":
-            return "WeatherIcons/clear-day.png"
-        case "clear-night":
-            return "WeatherIcons/clear-night.png"
-        case _:
-            return "WeatherIcons/clear-day.png"
-
-
-#Method for returning the weekday based on date
-def weather_weekday(day_date):
-    match datetime.strptime(day_date, "%Y-%m-%d").weekday():
-        case 0:
-            return "Mon"
-        case 1:
-            return "Tue"
-        case 2:
-            return "Wed"
-        case 3:
-            return "Thu"
-        case 4:
-            return "Fri"
-        case 5:
-            return "Sat"
-        case 6:
-            return "Sun"
 
 
 #Method for displaying weather info from API response
