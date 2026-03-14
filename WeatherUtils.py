@@ -1,6 +1,6 @@
 from datetime import datetime
 
-
+#Method for retrieving weather icon based on API weather condition ID
 def weather_icon(weather_ID):
     match weather_ID:
         case "snow":
@@ -25,6 +25,7 @@ def weather_icon(weather_ID):
             return "WeatherIcons/clear-day.png"
 
 
+#Method for converting API date to weekday name
 def weather_weekday(day_date):
     try:
         w = datetime.strptime(day_date, "%Y-%m-%d").weekday()

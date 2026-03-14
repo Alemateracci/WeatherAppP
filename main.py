@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from MainGUI import GUI_main_parameters, GUI_weather_parameters
 
 class MainAppWindow(QMainWindow):
-    #Constructor method
+    #Main method 
     def __init__(self):
         super().__init__()
 

@@ -124,8 +124,6 @@ def GUI_weather_parameters(self):
                                                     "font-weight: bold;")
 
 
-
-
 #Method for displaying weather info from API response
 def display_weather(self, weather_data_json):
     self.country_result_label.setText((weather_data_json['resolvedAddress'].split(",")[0]).capitalize())
