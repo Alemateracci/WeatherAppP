@@ -1,5 +1,9 @@
 from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QMessageBox
 from PyQt5.QtCore import Qt
+from UnitConversion import unit_conversion_deg_to_fer, unit_conversion_fer_to_deg
+from PyQt5.QtGui import QPixmap
+from datetime import datetime
+
 
 #Method for setting up main GUI parameters
 def GUI_main_parameters(self):
@@ -83,7 +87,7 @@ def GUI_weather_parameters(self):
                                             color: #ffffff;
                                         }
                                          """)
-    self.degree_button.clicked.connect(self.unit_conversion_fer_to_deg)
+    self.degree_button.clicked.connect(lambda: unit_conversion_fer_to_deg(self))
     
     #Setting up fahrenheit converter button
     self.fahrenheit_button = QPushButton("°F", self)
@@ -99,7 +103,7 @@ def GUI_weather_parameters(self):
                                                 color: #ffffff;
                                             }
                                             """)
-    self.fahrenheit_button.clicked.connect(self.unit_conversion_deg_to_fer)
+    self.fahrenheit_button.clicked.connect(lambda: unit_conversion_deg_to_fer(self))
 
     #Setting up precipitation, wind speed and pressure result label
     self.precipitation_label = QLabel(f"Precipitation: 0% \nWind Speed: 0 km/h \nPressure: 0 hPa", self)
@@ -116,3 +120,61 @@ def GUI_weather_parameters(self):
     self.weather_description_label.setStyleSheet("background-color: transparent;"
                                                     "font-size: 18px;"
                                                     "font-weight: bold;")
+
+
+#Method for returning the weather icon based on the weather ID
+def weather_icon(weather_ID):
+    match weather_ID:
+        case "snow":
+            return "WeatherIcons/snow.png"
+        case "rain":
+            return "WeatherIcons/rain.png"
+        case "fog":
+            return "WeatherIcons/fog.png"
+        case "wind":
+            return "WeatherIcons/wind.png"
+        case "cloudy":
+            return "WeatherIcons/cloudy.png"
+        case "partly-cloudy-day":
+            return "WeatherIcons/partly-cloudy-day.png"
+        case "partly-cloudy-night":
+            return "WeatherIcons/partly-cloudy-night.png"
+        case "clear-day":
+            return "WeatherIcons/clear-day.png"
+        case "clear-night":
+            return "WeatherIcons/clear-night.png"
+        case _:
+            return "WeatherIcons/clear-day.png"
+
+
+#Method for returning the weekday based on date
+def weather_weekday(day_date):
+    match datetime.strptime(day_date, "%Y-%m-%d").weekday():
+        case 0:
+            return "Mon"
+        case 1:
+            return "Tue"
+        case 2:
+            return "Wed"
+        case 3:
+            return "Thu"
+        case 4:
+            return "Fri"
+        case 5:
+            return "Sat"
+        case 6:
+            return "Sun"
+
+
+#Method for displaying weather info from API response
+def display_weather(self, weather_data_json):
+    self.country_result_label.setText((weather_data_json['resolvedAddress'].split(",")[0]).capitalize())
+    self.temperature_result_label.setText(f"{weather_data_json['days'][0]['temp']:.0f}")
+    self.precipitation_label.setText(
+        f"Precipitation: {weather_data_json['days'][0]['precip']:.0f} % \nWind Speed: {weather_data_json['days'][0]['windspeed']:.0f} km/h \nPressure: {weather_data_json['days'][0]['pressure']:.0f} hPa"
+    )
+    self.weather_description_label.setText(weather_data_json['days'][0]['conditions'])
+
+    Pixmap_icon_address = QPixmap(weather_icon(weather_data_json['days'][0]['icon']))
+    self.icon_result_label.setScaledContents(True)
+    self.icon_result_label.setPixmap(Pixmap_icon_address)
