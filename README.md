@@ -27,25 +27,6 @@ The application is designed with flexibility and scalability in mind:
   - Visual Crossing Weather API
 - **Application Logic**
   - Python services for fetching, parsing, and processing data
-- **Persistence Options**
-  - Local database (per device)
-  - Cloud database (AWS)
-- **User Layer**
-  - Accounts
-  - Saved locations
-  - Device-specific preferences
-
----
-
-## ☁️ AWS Integration (Planned)
-
-The cloud layer will be implemented using AWS services, such as:
-
-- **Amazon RDS or DynamoDB** – user accounts and saved locations
-- **AWS IAM / Cognito** – authentication and access control
-- **AWS EC2 / Lambda** – backend services if required
-
-This allows secure data storage, scalability, and synchronization across multiple devices.
 
 ---
 
@@ -53,10 +34,6 @@ This allows secure data storage, scalability, and synchronization across multipl
 
 - **Language:** Python 🐍
 - **Weather API:** Visual Crossing Weather API
-- **Cloud Provider:** AWS (planned)
-- **Databases:**
-  - Local: SQLite (or equivalent)
-  - Cloud: AWS RDS or DynamoDB
 
 ---
 
