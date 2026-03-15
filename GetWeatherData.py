@@ -8,7 +8,7 @@ from UnitConversion import unit_conversion_fer_to_deg
 #Method for retrieving weather information
 def get_weather_info(self):
     # API information and URL construction
-    load_dotenv()
+    load_dotenv("Informative/.env")
     key_weatherAPI = os.getenv("API_KEY")
     city_Input = self.search_input.text().strip()
 

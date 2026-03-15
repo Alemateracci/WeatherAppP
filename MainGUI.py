@@ -2,13 +2,11 @@ from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QMessageBox
 from PyQt5.QtCore import Qt
 from UnitConversion import unit_conversion_deg_to_fer, unit_conversion_fer_to_deg
 from PyQt5.QtGui import QPixmap
-from WeatherUtils import weather_icon, weather_weekday
-from GetWeatherData import get_weather_info as fetch_weather_info
+from WeatherUtils import weather_icon
+from GetWeatherData import get_weather_info
 
 #Method for setting up main GUI parameters
 def GUI_main_parameters(self):
-    # bind weather lookup action to this window
-    self.get_weather_info = lambda: fetch_weather_info(self)
     #Setting up welcome message label
     self.welcome_label = QLabel("Welcome to Weather \nApplication!", self)
     self.welcome_label.setGeometry(0, 5, 800, 90)
@@ -20,7 +18,7 @@ def GUI_main_parameters(self):
     #Setting search text box
     self.search_input = QLineEdit(self)
     self.search_input.setAlignment(Qt.AlignLeft)
-    self.search_input.returnPressed.connect(self.get_weather_info)
+    self.search_input.returnPressed.connect(lambda: get_weather_info(self))
     self.search_input.setPlaceholderText('Enter the city and/or country (e.g. "London, UK")')
     self.search_input.setGeometry(270, 118, 550, 50)
     self.search_input.setStyleSheet("font-size: 20px;"
@@ -44,7 +42,7 @@ def GUI_main_parameters(self):
                                             background-color: #2e2e2e;  
                                         }
                                         """)
-    self.search_button.clicked.connect(self.get_weather_info)
+    self.search_button.clicked.connect((lambda: get_weather_info(self)))
 
     #Setting search result background label
     self.search_result_backgroundC_label = QLabel(self)
