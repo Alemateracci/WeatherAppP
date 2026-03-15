@@ -15,15 +15,7 @@ This project is designed to start simple while scaling into a cloud-backed, mult
 - 🌡️ **Temperature unit switching (Celsius ↔ Fahrenheit)**
 - 🔌 Powered by the **Visual Crossing Weather API**
 - 🐍 Built entirely in **Python**
-
-### 🚧 Planned & In-Progress Features
-- 👤 **User Accounts & Authentication**
-- ⭐ **Saved Locations** per user
-- ☁️ **Cloud Database (AWS)** for account and location data
-- 💾 **Local Device Storage (Optional)**
-  - Each device can maintain its own local database
-  - Users can choose between local-only storage or cloud-based storage
-- 🔄 Hybrid mode (local cache + cloud sync)
+- Deployed for MacOS in .dmg file
 
 ---
 
@@ -72,9 +64,5 @@ This allows secure data storage, scalability, and synchronization across multipl
 
 - [x] Basic weather data retrieval
 - [x] Temperature unit switching (°C / °F)
-- [ ] User authentication system
-- [ ] Save and manage locations
-- [ ] Local per-device database
-- [ ] AWS cloud database integration
-- [ ] Cross-device synchronization
-- [ ] UI and UX improvements
+- [x] Deployment
+- [x] UI and UX improvements
