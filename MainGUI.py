@@ -42,7 +42,7 @@ def GUI_main_parameters(self):
                                             background-color: #2e2e2e;  
                                         }
                                         """)
-    self.search_button.clicked.connect(lambda checked=False: get_weather_info(self))
+    self.search_button.clicked.connect(lambda: get_weather_info(self))
 
     #Setting search result background label
     self.search_result_backgroundC_label = QLabel(self)

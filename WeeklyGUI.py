@@ -18,6 +18,7 @@ def display_weekly_weather(self, weather_data_json):
     self.seven_day_weather_widget = QWidget(self)
     self.seven_day_weather_widget.setGeometry(0, 445, 800, 140)
     self.seven_day_weather_widget.setStyleSheet("background-color: transparent;")
+    self.seven_day_weather_widget.setVisible(True)
 
     for i in range(7):
         weekday = "Today" if i == 0 else weather_weekday(weather_data_json['days'][i]['datetime'])

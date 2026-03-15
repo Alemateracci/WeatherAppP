@@ -25,7 +25,7 @@ def get_weather_info(self):
 
     try:
         # Requesting API data and converting to JSON format
-        response = requests.get(url)
+        response = requests.get(url, timeout=(5, 20))
         response.raise_for_status()
         weather_data_json = response.json()
 
