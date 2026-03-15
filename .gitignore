@@ -9,3 +9,8 @@ ToDo.txt
 
 #Python cache files
 __pycache__/
+
+#Python deployment files and dmg
+DeployedApp
+WeatherAppInstaller.dmg
+build/
