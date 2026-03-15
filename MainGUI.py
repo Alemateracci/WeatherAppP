@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton
 from PyQt5.QtCore import Qt
-from UnitConversion import unit_conversion_deg_to_fer, unit_conversion_fer_to_deg
 from PyQt5.QtGui import QPixmap
+from UnitConversion import unit_conversion_deg_to_fer, unit_conversion_fer_to_deg
 from WeatherUtils import weather_icon
 
 #Method for setting up main GUI parameters
