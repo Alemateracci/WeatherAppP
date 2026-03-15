@@ -4,6 +4,7 @@ import os
 from ErrorFunction import display_error
 from WeeklyGUI import display_weekly_weather
 from UnitConversion import unit_conversion_fer_to_deg
+from MainGUI import display_weather
 
 #Method for retrieving weather information
 def get_weather_info(self):
@@ -28,7 +29,6 @@ def get_weather_info(self):
         response.raise_for_status()
         weather_data_json = response.json()
 
-        from MainGUI import display_weather
         display_weather(self, weather_data_json)
         display_weekly_weather(self, weather_data_json)
 

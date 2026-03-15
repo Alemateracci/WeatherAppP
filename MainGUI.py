@@ -1,12 +1,12 @@
-from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton
 from PyQt5.QtCore import Qt
 from UnitConversion import unit_conversion_deg_to_fer, unit_conversion_fer_to_deg
 from PyQt5.QtGui import QPixmap
 from WeatherUtils import weather_icon
-from GetWeatherData import get_weather_info
 
 #Method for setting up main GUI parameters
 def GUI_main_parameters(self):
+    from GetWeatherData import get_weather_info
     #Setting up welcome message label
     self.welcome_label = QLabel("Welcome to Weather \nApplication!", self)
     self.welcome_label.setGeometry(0, 5, 800, 90)
@@ -42,7 +42,7 @@ def GUI_main_parameters(self):
                                             background-color: #2e2e2e;  
                                         }
                                         """)
-    self.search_button.clicked.connect((lambda: get_weather_info(self)))
+    self.search_button.clicked.connect(lambda checked=False: get_weather_info(self))
 
     #Setting search result background label
     self.search_result_backgroundC_label = QLabel(self)
@@ -87,7 +87,7 @@ def GUI_weather_parameters(self):
                                             color: #ffffff;
                                         }
                                          """)
-    self.degree_button.clicked.connect(lambda: unit_conversion_fer_to_deg(self))
+    self.degree_button.clicked.connect(lambda checked=False: unit_conversion_fer_to_deg(self))
     
     #Setting up fahrenheit converter button
     self.fahrenheit_button = QPushButton("°F", self)
@@ -103,7 +103,7 @@ def GUI_weather_parameters(self):
                                                 color: #ffffff;
                                             }
                                             """)
-    self.fahrenheit_button.clicked.connect(lambda: unit_conversion_deg_to_fer(self))
+    self.fahrenheit_button.clicked.connect(lambda checked=False: unit_conversion_deg_to_fer(self))
 
     #Setting up precipitation, wind speed and pressure result label
     self.precipitation_label = QLabel(f"Precipitation: 0% \nWind Speed: 0 km/h \nPressure: 0 hPa", self)
