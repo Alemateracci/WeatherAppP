@@ -12,3 +12,4 @@ __pycache__/
 
 #Python deployment files and dmg
 build/
+WeatherAppInstaller.dmg
