@@ -61,7 +61,3 @@ The app is packaged for macOS using `py2app` (see [`setup.py`](setup.py)) into a
 - [x] Error handling
 - [x] macOS deployment (`.app` / `.dmg`)
 - [x] UI and UX improvements
-- [ ] User accounts
-- [ ] Saved locations
-- [ ] Local per-device storage
-- [ ] Cloud persistence (AWS)
